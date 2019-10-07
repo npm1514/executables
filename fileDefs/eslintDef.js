@@ -1,5 +1,4 @@
-module.exports = () => {
-  return `{
+module.exports = `{
   "parser": "babel-eslint",
   "globals": {
     "document": true,
@@ -12,4 +11,3 @@ module.exports = () => {
     "s": true
   }
 }`;
-}

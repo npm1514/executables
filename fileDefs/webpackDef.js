@@ -1,8 +1,9 @@
 module.exports = (listOfPages) => {
+  const lpQuote = listOfPages.map(page => `'${page}'`)
   return `const path = require('path');
 const webpack = require('webpack');
 require('@babel/polyfill');
-const pages = [${listOfPages}];
+const pages = [${lpQuote}];
 
 module.exports = pages.map((page) => {
   return {

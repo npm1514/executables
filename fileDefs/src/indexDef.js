@@ -1,12 +1,14 @@
 module.exports = (listOfPages) => {
+  const pgCap = listOfPages.map(page => {
+    return page.slice(0,1).toUpperCase() + page.slice(1);
+  })
   return `import express from "express";
 import fetch from "node-fetch";
 import React from "react";
 import { renderToString } from "react-dom/server";
 
 ${listOfPages.map((page, i) => {
-  const pg = page.slice(1,2).toUpperCase() + page.slice(2, page.length - 1);
-  return `import ${pg}Root from "./roots/${pg}Root";`
+  return `import ${pgCap[i]}Root from "./roots/${pgCap[i]}Root";`
 }).join('\n')}
 
 import { ServerStyleSheet } from 'styled-components';
@@ -26,24 +28,21 @@ app.use(bodyParser.urlencoded())
 
 var dataObj = {},
 ${listOfPages.map((page, i) => {
-  return `${page.split("'").join('')}Bundle = ""`
+  return `${page}Bundle = ""`
 }).join(',\n')};
 
 ${listOfPages.map((page, i) => {
-  const pg = page.split("'").join('');
-  return `fs.readFile('./dist/js/${pg}.bundle.min.js', "utf8", (err, data) => {
+  return `fs.readFile('./dist/js/${page}.bundle.min.js', "utf8", (err, data) => {
   if (err) console.log("ERR" ,err);
-  ${pg}Bundle = data || "";
+  ${page}Bundle = data || "";
 })`
 }).join('\n')}
 
 ${listOfPages.map((page, i) => {
-  const pg = page.split("'").join('');
-  const pgc = page.slice(1,2).toUpperCase() + page.slice(2, page.length - 1);
-  return `app.get('/${pg}', (req, res) => {
+  return `app.get('/${page}', (req, res) => {
   let data = "";
   res.set('Cache-Control', 'public, max-age=31557600');
-  res.send(returnHTML(data, ${pg}Bundle, ${pgc}Root, "${pg}"));
+  res.send(returnHTML(data, ${page}Bundle, ${pgCap[i]}Root, "${page}"));
 });`
 
 }).join(',\n')};
