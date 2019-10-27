@@ -45,7 +45,7 @@ ${listOfPages.map((page, i) => {
   res.send(returnHTML(data, ${page}Bundle, ${pgCap[i]}Root, "${page}"));
 });`
 
-}).join(',\n')};
+}).join('\n')};
 
 app.get('/health', (req, res) => res.send('OK'));
 

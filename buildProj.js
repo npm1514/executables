@@ -63,11 +63,11 @@ const action3 = () => {
         console.log("index.js File Created");
       }
       //Make babel.rc
-      if(fs.existsSync(projectName + '/babel.rc')) {
+      if(fs.existsSync(projectName + '/.babelrc')) {
         console.log('The model.js file already exists');
       }
       else {
-        fs.writeFileSync(projectName + '/babel.rc', babelDef);
+        fs.writeFileSync(projectName + '/.babelrc', babelDef);
         console.log("babel.rc File Created");
       }
       //Make .eslintrc.json
@@ -170,12 +170,13 @@ const action3 = () => {
           }
             //Make pages files
             listOfPages.map((page) => {
-              if(fs.existsSync(`${projectName}/src/pages/${page}Page.js`)) {
-                console.log(`The ${page}Page.js file already exists`);
+              const pgCap = page.slice(0,1).toUpperCase() + page.slice(1);
+              if(fs.existsSync(`${projectName}/src/pages/${pgCap}Page.js`)) {
+                console.log(`The ${pgCap}Page.js file already exists`);
               }
               else {
-                fs.writeFileSync(`${projectName}/src/pages/${page}Page.js`, pageDef(page));
-                console.log(`${page}Page.js file created!`);
+                fs.writeFileSync(`${projectName}/src/pages/${pgCap}Page.js`, pageDef(page));
+                console.log(`${pgCap}Page.js file created!`);
               }
             })
           //Make roots directory
