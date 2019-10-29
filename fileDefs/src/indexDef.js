@@ -84,6 +84,26 @@ function returnHTML(data, bundle, Page, title){
     const body = renderToString(sheet.collectStyles(<Page data={data}/>));
     const styles = sheet.getStyleTags();
 
+    return \`
+            <html lang="en">
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>\${title}</title>
+                <meta name="Description" content="\${title}">
+                <style>
+                  body { margin: 0; font-family: Helvetica; }
+                  a { text-decoration: none; color: #000; }
+                </style>
+                \${styles}
+              </head>
+              <body>
+                <script>window.os = window.os || {};</script>
+                <script>window.__LPO__=\${dataString}</script>
+                <div id="app" role="main">\${body}</div>
+                <script>\${bundle}</script>
+              </body>
+            </html>
+          \`;
 }
 
 function errHandle(err){

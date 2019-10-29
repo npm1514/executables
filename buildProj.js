@@ -1,6 +1,7 @@
 var fs = require('fs');
 var readline = require('readline');
 var cp = require('child_process');
+const { exec } = cp;
 var path = require('path');
 
 var babelDef = require('./fileDefs/babelDef');
@@ -189,12 +190,13 @@ const action3 = () => {
           }
             //Make roots files
             listOfPages.map((page) => {
-              if(fs.existsSync(`${projectName}/src/roots/${page}Root.js`)) {
-                console.log(`The ${page}Root.js file already exists`);
+              const pgCap = page.slice(0,1).toUpperCase() + page.slice(1);
+              if(fs.existsSync(`${projectName}/src/roots/${pgCap}Root.js`)) {
+                console.log(`The ${pgCap}Root.js file already exists`);
               }
               else {
-                fs.writeFileSync(`${projectName}/src/roots/${page}Root.js`, rootDef(page));
-                console.log(`${page}Root.js file created!`);
+                fs.writeFileSync(`${projectName}/src/roots/${pgCap}Root.js`, rootDef(page));
+                console.log(`${pgCap}Root.js file created!`);
               }
             })
           //Make styled-components directory
@@ -239,8 +241,52 @@ const action3 = () => {
             fs.writeFileSync(projectName + '/src/index.js', serverDef(listOfPages));
             console.log("Server index.js File Created");
           }
-    console.log("awww yeah!! Successful build!!");
+    console.log("file creation successful!!");
     resolve()
+  })
+}
+
+const changeDirectory = () => {
+  return new Promise((resolve, reject) => {
+    process.chdir(`${projectName}`);
+    console.log('New directory: ' + process.cwd());
+    resolve()
+  })
+}
+
+const yarn = () => {
+  return new Promise((resolve, reject) => {
+    console.log("executing yarn install...");
+    exec('yarn', (err, stdout, stderr) => {
+      if (err) return;
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+      resolve()
+    });
+  })
+}
+
+const build = () => {
+  return new Promise((resolve, reject) => {
+    console.log("executing yarn build...");
+    exec('yarn build', (err, stdout, stderr) => {
+      if (err) return;
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+      resolve()
+    });
+  })
+}
+
+const bundle = () => {
+  return new Promise((resolve, reject) => {
+    console.log("executing yarn bundle...");
+    exec('yarn bundle', (err, stdout, stderr) => {
+      if (err) return;
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+      resolve()
+    });
   })
 }
 
@@ -248,6 +294,10 @@ const main = async () => {
   await question1();
   await question2();
   await action3();
+  await changeDirectory();
+  await yarn();
+  await build();
+  await bundle();
   rl.close();
 };
 

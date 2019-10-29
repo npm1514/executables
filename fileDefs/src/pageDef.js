@@ -3,14 +3,16 @@ module.exports = (page) => {
   return `import React, { Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ${pgCap}Wrapper } from '../styled-components/${page}';
+import { ${pgCap}Wrapper, ${pgCap}Content } from '../styled-components/${page}';
 
 class ${pgCap} extends Component {
     render(){
       return (
           <${pgCap}Wrapper>
               <Header/>
-              page
+              <${pgCap}Content>
+                ${page} page
+              </${pgCap}Content>
               <Footer/>
           </${pgCap}Wrapper>
       );
