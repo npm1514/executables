@@ -6,7 +6,7 @@ import ${pgCap} from '../pages/${pgCap}Page';
 
 if (window)
   render(
-    <${pgCap} data={window.__ISO__} />,
+    <${pgCap} data={window.__DATA__} />,
     document.getElementById('app')
   );
 `;

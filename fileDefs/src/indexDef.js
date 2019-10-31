@@ -98,7 +98,7 @@ function returnHTML(data, bundle, Page, title){
               </head>
               <body>
                 <script>window.os = window.os || {};</script>
-                <script>window.__LPO__=\${dataString}</script>
+                <script>window.__DATA__=\${dataString}</script>
                 <div id="app" role="main">\${body}</div>
                 <script>\${bundle}</script>
               </body>
