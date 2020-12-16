@@ -1,5 +1,5 @@
 module.exports = `import React, { Component } from 'react';
-import { Header } from '../styled-components/header';
+import { Header } from '../styled-components/components/header';
 
 class HeaderComponent extends Component {
   render(){

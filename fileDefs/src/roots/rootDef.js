@@ -1,11 +1,12 @@
 module.exports = (page) => {
   const pgCap = page.slice(0,1).toUpperCase() + page.slice(1);
   return `import React, { Component } from 'react';
-import ${pgCap} from '../pages/${pgCap}Page';
+import { ${pgCap}Page } from '../pages';
 
 class Root extends Component {
     render() {
-        return <${pgCap} data={this.props.data ? this.props.data : {}}/>
+        const { data } = this.props;
+        return <${pgCap}Page data={data ? data : {}}/>
     }
 }
 
