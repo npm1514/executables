@@ -10,6 +10,7 @@ import { ServerStyleSheet } from 'styled-components';
 import fs from 'fs';
 import compression from 'compression';
 import cors from 'cors';
+import path from 'path';
 import bodyParser from 'body-parser';${authNeeded ? `\nimport passport from 'passport';
 import session from 'express-session';` : ``}${listOfCollections.length ? `\nimport mongoose from 'mongoose';
 import Cryptr from 'cryptr';
