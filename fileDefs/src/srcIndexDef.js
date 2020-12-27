@@ -11,6 +11,7 @@ import fs from 'fs';
 import compression from 'compression';
 import cors from 'cors';
 import path from 'path';
+import cron from 'node-cron';
 import bodyParser from 'body-parser';${authNeeded ? `\nimport passport from 'passport';
 import session from 'express-session';` : ``}${listOfCollections.length ? `\nimport mongoose from 'mongoose';
 import Cryptr from 'cryptr';
@@ -34,8 +35,13 @@ app.use(passport.initialize());
 app.use(passport.session());` : ``}
 app.use(compression());
 app.use(cors());
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+
+cron.schedule('* * 1 * *', () => {
+  fetch('http://www.cafejuniperslc.com/')
+  .then(res => console.log("requested at " + new Date()));
+});
 
 var dataObj = {},
 ${listOfPages.map((page, i) => {

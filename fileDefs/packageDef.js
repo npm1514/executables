@@ -21,6 +21,7 @@ module.exports = (projectName, dbNeeded, authNeeded) => {
     "compression": "^1.7.3",
     "cors": "^2.8.5",${dbNeeded ? `\n"cryptr": "^6.0.2",` : ``}
     "express": "^4.16.3",${authNeeded ? `\n"express-session": "^1.17.1",` : ``}${dbNeeded ? `\n"mongoose": "^5.11.7",` : ``}
+    "node-cron": "^2.0.3",
     "node-fetch": "^2.6.0",${authNeeded ? `\n"passport": "^0.4.1",` : ``}${authNeeded ? `\n"passport-local": "^1.0.0",` : ``}
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
