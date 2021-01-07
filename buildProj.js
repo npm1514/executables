@@ -70,6 +70,7 @@ const question1 = () => {
   return new Promise((resolve, reject) => {
     rl.question('What is the project name?\n', (answer) => {
       projectName = answer;
+      console.log(projectName);
       resolve()
     })
   })
@@ -91,6 +92,7 @@ const question3 = () => {
       authNeeded = answer == "yes" || answer == "y" ? true : false;
       dbNeeded = authNeeded;
       console.log(authNeeded);
+      console.log(dbNeeded);
       resolve()
     })
   })
@@ -130,7 +132,6 @@ const question6 = () => {
     rl.question('Is an email form needed? (Yes/No)\n', (answer) => {
       answer = answer.toLowerCase();
       emailNeeded = answer == "yes" || answer == "y" ? true : false;
-      dbNeeded = emailNeeded;
       console.log(emailNeeded);
       resolve()
     })
@@ -341,7 +342,7 @@ const action1 = () => {
                   console.log('The config index.js file already exists');
                 }
                 else {
-                  fs.writeFileSync(`../${projectName}/src/config/index.js`, configIndexDef);
+                  fs.writeFileSync(`../${projectName}/src/config/index.js`, configIndexDef(projectName, listOfCollections, emailNeeded));
                   console.log("config index.js File Created");
                 }
               }

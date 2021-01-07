@@ -16,13 +16,13 @@ module.exports = (projectName, dbNeeded, authNeeded, emailNeeded) => {
     "watch": "npm-watch"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.0", ${authNeeded || emailNeeded ? `\n"bcrypt-nodejs": "^0.0.3",` : ``}
+    "@babel/cli": "^7.2.0", ${authNeeded || emailNeeded ? `\n    "bcrypt-nodejs": "^0.0.3",` : ``}
     "body-parser": "^1.19.0",
     "compression": "^1.7.3",
-    "cors": "^2.8.5",${dbNeeded ? `\n"cryptr": "^6.0.2",` : ``}
-    "express": "^4.16.3",${authNeeded ? `\n"express-session": "^1.17.1",` : ``}${dbNeeded ? `\n"mongoose": "^5.11.7",` : ``}
+    "cors": "^2.8.5",${dbNeeded ? `\n    "cryptr": "^6.0.2",` : ``}
+    "express": "^4.16.3",${authNeeded ? `\n    "express-session": "^1.17.1",` : ``}${dbNeeded ? `\n    "mongoose": "^5.11.7",` : ``}
     "node-cron": "^2.0.3",
-    "node-fetch": "^2.6.0",${authNeeded ? `\n"passport": "^0.4.1",` : ``}${authNeeded ? `\n"passport-local": "^1.0.0",` : ``}
+    "node-fetch": "^2.6.0",${authNeeded ? `\n    "passport": "^0.4.1",` : ``}${authNeeded ? `\n    "passport-local": "^1.0.0",` : ``}
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "styled-components": "^4.1.3"
