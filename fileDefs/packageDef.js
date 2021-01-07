@@ -1,4 +1,4 @@
-module.exports = (projectName, dbNeeded, authNeeded) => {
+module.exports = (projectName, dbNeeded, authNeeded, emailNeeded) => {
   return `{
   "name": "${projectName}",
   "version": "1.0.0",
@@ -16,7 +16,7 @@ module.exports = (projectName, dbNeeded, authNeeded) => {
     "watch": "npm-watch"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.0", ${authNeeded ? `\n"bcrypt-nodejs": "^0.0.3",` : ``}
+    "@babel/cli": "^7.2.0", ${authNeeded || emailNeeded ? `\n"bcrypt-nodejs": "^0.0.3",` : ``}
     "body-parser": "^1.19.0",
     "compression": "^1.7.3",
     "cors": "^2.8.5",${dbNeeded ? `\n"cryptr": "^6.0.2",` : ``}

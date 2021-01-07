@@ -1,4 +1,4 @@
-module.exports = (projectName, listOfPages, authNeeded, listOfCollections) => {
+module.exports = (projectName, listOfPages, authNeeded, listOfCollections, emailNeeded) => {
   const pgCap = listOfPages.map(page => {
     return page.slice(0,1).toUpperCase() + page.slice(1);
   })
@@ -10,11 +10,10 @@ import { ServerStyleSheet } from 'styled-components';
 import fs from 'fs';
 import compression from 'compression';
 import cors from 'cors';
-import path from 'path';
-import cron from 'node-cron';
+import path from 'path';${listOfCollections.length ? `\nimport mongoose from 'mongoose';` : ``}
+import cron from 'node-cron';${emailNeeded ? `\nimport nodemailer from 'nodemailer';` : ``}
 import bodyParser from 'body-parser';${authNeeded ? `\nimport passport from 'passport';
-import session from 'express-session';` : ``}${listOfCollections.length ? `\nimport mongoose from 'mongoose';
-import Cryptr from 'cryptr';
+import session from 'express-session';` : ``}${listOfCollections.length || emailNeeded ? `import Cryptr from 'cryptr';
 const cryptr = new Cryptr(config.key);
 import config from './config';` : ``}${authNeeded ? `\nimport passportConfig from './config/passport';` : ``}${listOfCollections.length ? `\n` : ``}${listOfCollections.map((collection, i) => {
   return `\nimport ${collection}Ctrl from './controllers/${collection}Ctrl';`
@@ -39,7 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
 cron.schedule('* * 1 * *', () => {
-  fetch('http://www.cafejuniperslc.com/')
+  fetch('https://${projectName}.herokuapp.com/')
   .then(res => console.log("requested at " + new Date()));
 });
 
@@ -60,6 +59,36 @@ ${listOfPages.map((page, i) => {
   res.send(returnHTML(data, ${page}Bundle, ${pgCap[i]}Root, "${page}"));
 });`
 }).join('\n')};
+
+${emailNeeded ? `app.post('/emailer', (req, res) => {
+  let { email, name, description, phone } = req.body;
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth: {
+      user: cryptr.decrypt(config.nodemailerEmail),
+      pass: cryptr.decrypt(config.nodemailerPW)
+    }
+  });
+
+  transporter.sendMail({
+    from: email,
+    to: cryptr.decrypt(config.nodemailerEmail),
+    subject: 'Nelson Rozier: Online Inquiry',
+    html: \`
+      <h3>Hi! The following person has submitted a message.<h3/>
+      <h4>Name: \${name}</h4>
+      <h4>Email: \${email}</h4>
+      <h4>Phone: \${phone}</h4>
+      <h4>Message: \${description}</h4>
+    \`
+  }, (error, info) => {
+    if (error) res.send({error: error});
+    else res.send({response: info});
+  });
+})` : ``}
 
 app.get('/images/:id', (req, res) => {
   res.set('Cache-Control', 'public, max-age=31557600');

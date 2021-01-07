@@ -59,6 +59,7 @@ var webpackDef = require('./fileDefs/webpackDef');
 var projectName = "";
 var listOfPages = [];
 var authNeeded = false;
+var emailNeeded = false;
 var dbNeeded = false;
 var listOfCollections = [];
 
@@ -86,7 +87,8 @@ const question2 = () => {
 const question3 = () => {
   return new Promise((resolve, reject) => {
     rl.question('Is authentication needed? (Yes/No)\n', (answer) => {
-      authNeeded = answer == "yes" || answer == "Yes" || answer == "YES" ? true : false;
+      answer = answer.toLowerCase();
+      authNeeded = answer == "yes" || answer == "y" ? true : false;
       dbNeeded = authNeeded;
       console.log(authNeeded);
       resolve()
@@ -97,7 +99,8 @@ const question4 = () => {
   return new Promise((resolve, reject) => {
     if(!authNeeded){
       rl.question('Is a database needed? (Yes/No)\n', (answer) => {
-        dbNeeded = answer == "yes" || answer == "Yes" || answer == "YES" ? true : false;
+        answer = answer.toLowerCase();
+        dbNeeded = answer == "yes" || answer == "y" ? true : false;
         console.log(dbNeeded);
         resolve()
       })
@@ -119,6 +122,18 @@ const question5 = () => {
     } else {
       resolve()
     }
+  })
+}
+
+const question6 = () => {
+  return new Promise((resolve, reject) => {
+    rl.question('Is an email form needed? (Yes/No)\n', (answer) => {
+      answer = answer.toLowerCase();
+      emailNeeded = answer == "yes" || answer == "y" ? true : false;
+      dbNeeded = emailNeeded;
+      console.log(emailNeeded);
+      resolve()
+    })
   })
 }
 
@@ -191,7 +206,7 @@ const action1 = () => {
       console.log('The package.json file already exists');
     }
     else {
-      fs.writeFileSync('../' + projectName + '/package.json', packageDef(projectName, dbNeeded, authNeeded));
+      fs.writeFileSync('../' + projectName + '/package.json', packageDef(projectName, dbNeeded, authNeeded, emailNeeded));
       console.log("package.json File Created");
     }
 
@@ -231,7 +246,7 @@ const action1 = () => {
           console.log('The server index.js file already exists');
         }
         else {
-          fs.writeFileSync('../' + projectName + '/src/index.js', srcIndexDef(projectName, listOfPages, authNeeded,  listOfCollections));
+          fs.writeFileSync('../' + projectName + '/src/index.js', srcIndexDef(projectName, listOfPages, authNeeded,  listOfCollections, emailNeeded));
           console.log("server index.js File Created");
         }
 
@@ -298,7 +313,7 @@ const action1 = () => {
             }
 
 
-        if(authNeeded || dbNeeded){
+        if(authNeeded || dbNeeded || emailNeeded){
           //Make config directory
           if(fs.existsSync('../' + projectName + '/src/config')) {
             console.log('The config directory already exists');
@@ -320,7 +335,7 @@ const action1 = () => {
               }
 
 
-              if(dbNeeded){
+              if(dbNeeded || emailNeeded){
                 //Make components index.js file
                 if(fs.existsSync(`../${projectName}/src/config/index.js`)) {
                   console.log('The config index.js file already exists');
@@ -617,6 +632,7 @@ const main = async () => {
   await question3();
   await question4();
   await question5();
+  await question6();
   await action1();
   await changeDirectory();
   await yarn();
